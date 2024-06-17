@@ -1,7 +1,7 @@
 from fastapi import FastAPI # type: ignore
 from fastapi.middleware.cors import CORSMiddleware # type: ignore
 from db import database, engine, metadata
-from controllers import user_controller
+from controllers import user_controller, gemini_controller
 
 metadata.create_all(engine)
 
@@ -25,6 +25,7 @@ async def shutdown():
     await database.disconnect()
 
 app.include_router(user_controller.router, prefix="/users", tags=["users"])
+app.include_router(gemini_controller.router, prefix="/gemini", tags=["gemini"])
 
 @app.get("/")
 def read_root():
